@@ -1,0 +1,545 @@
+<!DOCTYPE HTML>
+<html lang="en-US">
+	<head>
+		<meta charset="UTF-8">
+		<title>Inspire USA</title>
+		<style type="text/css">
+		
+		body {
+			margin: 0;
+			padding: 0;
+			background-color: #aaa;
+			font-family: arial;
+		}
+		
+		#column {
+			width: 800px;
+			margin: 0 auto;
+		}
+		
+		#video {
+			position: absolute;
+		}
+		
+		#main {
+			background: url('images/bg.jpg');
+			width: 800px;
+			height: 600px;
+			overflow: hidden;
+			position: relative;
+
+			-moz-transition: opacity 0.5s;
+			-webkit-transition: opacity 0.5s;
+			-o-transition: opacity 0.5s;
+			-ie-transition: opacity 0.5s;
+			transition: opacity 0.5s;
+		}
+
+		#main.hidden {
+			opacity: 0;
+		}
+		
+		#people {
+			position: relative;
+			margin: 15px;
+			width: 320px;
+		}
+		
+		#people > div {
+			position: absolute;
+			display: block;
+			width: 80px;
+			height: 188px;
+			cursor: pointer;
+		}
+		
+		#people > div:hover, #people > div.active {
+			background-image: url('images/hover-people.jpg');
+			background-repeat: no-repeat;
+			cursor: pointer;
+		}
+
+		#lightbox {
+			/*background-color: rgba(0, 0, 0, 0.4);*/
+			background: url('images/bg-right.jpg');
+			width: 455px;
+			height: 100%;
+			position: absolute;
+			right: 0;
+			top: 0;
+
+			-moz-transition: left 0.5s;
+			-webkit-transition: left 0.5s;
+			-o-transition: left 0.5s;
+			-ie-transition: left 0.5s;
+			transition: left 0.5s;
+		}
+
+		.hidden #lightbox {
+			right: -455px;
+
+			-moz-transition: left 0.5s;
+			-webkit-transition: left 0.5s;
+			-o-transition: left 0.5s;
+			-ie-transition: left 0.5s;
+			transition: left 0.5s;
+		}
+		
+		#lightbox section {
+			display: none;
+			font-size: 12px;
+			padding: 4px;
+			color: white;
+		}
+
+		#lightbox section h2 {
+			font-family: 'Rockwell Extra Bold', 'Rockwell';
+			font-weight: 800;
+			font-size: 28px;
+			margin: 10px 0 4px 15px;
+			height: 46px;
+			z-index: 200;
+		}
+		
+		#lightbox section h2.big {
+			font-size: 68px;
+			text-align: right;
+			text-shadow: black 2.5px 4px 5px;
+			color: #fff9da;
+			line-height: 60px;
+			margin-right: 8px;
+			margin-top: 100px;
+		}
+
+		#lightbox section.active {
+			display: block;
+		}
+
+		#lightbox section video,
+		#lightbox section img.main {
+			width: 426px;
+			margin-left: 15px;
+		}
+		
+		#lightbox section img.main:first-child {
+			margin-top: 60px
+		}
+		
+		#lightbox section .caption {
+			margin: 18px 58px;
+			max-height: 240px;
+			overflow-y: auto;
+		}
+		
+		#frame {
+			position: absolute;
+			z-index: 100;
+			top: 25px;
+			right: 0;
+			pointer-events: none;
+		}
+
+		#submit {
+			font-family: 'Rockwell Extra Bold', 'Rockwell';
+		}
+		
+		#submit h3 {
+			margin-top: 50px;
+			margin-left: 100px;
+			margin-bottom: 2px;
+		}
+
+		#submit.active + #frame {
+			display: none;
+		}
+
+		#submit fieldset {
+			border: none;
+			padding-left: 53px;
+		}
+		
+		#submit label {
+			width: 44px;
+		}
+
+		#submit label.invalid {
+			color: red;
+		}
+		
+		#submit label+input {
+			border: none;
+			line-height: 29px;
+			font-size: 20px;
+			width: 264px;
+			-moz-box-shadow: 1px 1px 2px black inset;
+			-webkit-box-shadow: 1px 1px 2px black inset;
+			-o-box-shadow: 1px 1px 2px black inset;
+			-ie-box-shadow: 1px 1px 2px black inset;
+			box-shadow: 1px 1px 2px black inset;
+			padding: 0 2px;
+		}
+		
+		#submit textarea {
+			padding: 0 2px;
+			line-height: 29px;
+			font-size: 20px;
+			border: none;
+			width: 320px;
+			height: 160px;
+			-moz-box-shadow: 1px 1px 2px black inset;
+			-webkit-box-shadow: 1px 1px 2px black inset;
+			-o-box-shadow: 1px 1px 2px black inset;
+			-ie-box-shadow: 1px 1px 2px black inset;
+			box-shadow: 1px 1px 2px black inset;
+		}
+		
+		#submit button {
+			background-image: -webkit-gradient(linear, left top, left bottom, from(#eb9104), to(#4b2e04)); 
+			background-image: -webkit-linear-gradient(top, #eb9104, #4b2e04);
+			background-image:    -moz-linear-gradient(top, #eb9104, #4b2e04);
+			background-image:     -ms-linear-gradient(top, #eb9104, #4b2e04);
+			background-image:      -o-linear-gradient(top, #eb9104, #4b2e04);
+			background-image:         linear-gradient(top, #eb9104, #4b2e04); /* standard, but currently unimplemented */
+			font-family: 'Rockwell Extra Bold', 'Rockwell';
+			color: white;
+			border: none;
+			line-height: 19px;
+			vertical-align: middle;
+			margin-left: 266px;
+		}
+		
+		#thank-you {
+			color: white;
+			background-color: rgba(255, 255, 255, 0.4);
+			text-align: center;
+			padding: 7px 20px;
+			width: 330px;
+			margin: 148px 40px;
+			font-size: 16px;
+			-moz-border-radius: 15px;
+			-webkit-border-radius: 15px;
+			-o-border-radius: 15px;
+			-ie-border-radius: 15px;
+			border-radius: 15px;
+			text-shadow: black 2.5px 4px 5px;
+		}
+		
+		</style>
+	</head>
+	<body>
+		<div id="column">
+			<video preload id="video" width="800" height="600" autoplay>
+				<source src="video/intro.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+				<source src="video/intro.webm" type='video/webm; codecs="vp8, vorbis"' />
+			</video>
+			<div id="main" class="hidden">
+				<div id="people"></div>
+				<div id="lightbox" class="hidden">
+					<section id="intro" class="active">
+						<img src="images/about.jpg" class="main"/>
+						<h2 class="big">Inspire Yourself</h2>
+					</section>
+
+					<section id="submit">
+						<h2>Do you have your<br/>own message of hope?</h2>
+						<div id="form">
+							<h3>Submit your story.</h3>
+							<fieldset>
+								<label for="name" id="label-name">Name</label>
+								<input type="text" id="name"/>
+							</fieldset>
+							<fieldset>
+								<label for="email" id="label-email">email</label>
+								<input type="text" id="email"/>
+							</fieldset>
+							<fieldset>
+								<textarea id="story"></textarea>
+							</fieldset>
+							<fieldset id="captcha"></fieldset>
+							<fieldset>
+								<button id="submit-button">Submit</button>
+							</fieldset>
+						</div>
+						<div id="thank-you">
+							<p>Thank you for submitting your story. You will be notified once your story is online.</p>
+						</div>
+					</section>
+					<img id="frame" src="images/frame.png"/>
+
+					<section id="purpose">
+						<h2>Purpose</h2>
+						<video controls id="video-purpose" poster="images/purpose.jpg">
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-purpose.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-purpose.webm" type='video/webm; codecs="vp8, vorbis"' />
+						</video>
+						<div class="caption">
+							<p><i>Purpose</i> is a video reenactment of an anonymous young woman from San Mateo County, who struggled with a bipolar disorder.  She felt overwhelmed, and without a sense of drive.  In this video, you will experience her journey towards finding her purpose.</p>
+						</div>
+					</section>
+
+					<section id="scar">
+						<h2>Bag of Tricks</h2>
+						<video controls id="video-scar" poster="images/tricks.jpg">
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-scar.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-scar.webm" type='video/webm; codecs="vp8, vorbis"' />
+						</video>
+						<div class="caption">
+							<p>Expectations from society can influence us to act a certain way.  A teenage boy, finds this to be the case, as he deals with the fact that he might be a homosexual and transgender. Watch
+							as he overcomes society's pressures and learns to love himself for who he is.</p>
+						</div>
+					</section>
+
+					<section id="success">
+						<h2>Success is Different for Everyone</h2>
+						<video controls id="video-success" poster="images/success.jpg">
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-success.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-success.webm" type='video/webm; codecs="vp8, vorbis"' />
+						</video>
+						<div class="caption">
+							<p>A young overwhelmed teenager from San Mateo County feels the pressure to be an overachiever in school. He feels that the only way he can have a successful and happy life, is if he goes to an Ivy league college. When he is unable to meet the standards he set for himself, he feels his perfect future is slipping away. Watch as he discovers a new path towards success and happiness.</p>
+						</div>
+					</section>
+
+					<section id="writeitout">
+						<h2>Write It Out</h2>
+						<video controls id="video-writeitout" poster="images/writeitout.jpg">
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-writeitout.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+							<source src="http://videos-origin.mozilla.org/serv/webmademovies/bavc/inspire-writeitout.webm" type='video/webm; codecs="vp8, vorbis"' />
+						</video>
+						<div class="caption">
+							<p>When a girl is taken from her mother and put into a group home, she feels alone.  She has trouble expressing herself, and allows all her emotions to bottle up inside. She finds a way to express herself through the use of writing and poetry.  Watch her find her voice.</p>
+						</div>
+					</section>
+
+				</div>
+			</div>
+		</div>
+		<script type="text/javascript" src="http://www.google.com/recaptcha/api/js/recaptcha_ajax.js"></script>
+		<script type="text/javascript">
+		
+		(function () {
+		
+			var videos = [],
+			stories = [],
+			activePerson = false,
+			activeSection = false,
+			ids = [
+				'people', 'lightbox', 'video', 'intro', 'submit-button',
+				'label-name', 'label-email', 'name', 'email', 'story', 'thank-you', 'form'
+			],
+			elements = {};
+			
+			function pauseAll() {
+				var i;
+				for (i = 0; i < videos.length; i++) {
+					videos[i].pause();
+				}
+			}
+			
+			document.addEventListener('DOMContentLoaded', function() {
+				var section, sections;
+
+				function addSection(sec, i) {
+					var x, y, div = document.createElement('div');
+					
+					x = i % 4;
+					y = Math.floor(i / 4);
+					div.id = 'person' + i;
+					div.style.backgroundPosition = (-80 * x) + 'px ' + (-188 * y) + 'px';
+					div.style.left = (80 * x) + 'px';
+					div.style.top = (188 * y) + 'px';
+
+					div.addEventListener('click', function() {
+						if (activePerson === this) {
+							return;
+						}
+						
+						pauseAll();
+
+						elements.form.style.display = '';
+						elements['thank-you'].style.display = 'none';
+
+						if (activePerson) {
+							activePerson.removeAttribute('class');
+						}
+						this.setAttribute('class', 'active');
+						activePerson = this;
+						
+						if (activeSection) {
+							activeSection.removeAttribute('class');
+						}
+						sec.setAttribute('class', 'active');
+						activeSection = sec;
+
+					}, false);
+
+					elements.people.appendChild(div);
+				}
+				
+				window.loadStories = function(tumblr) {
+					var i, posts, sections, max,
+						post, url, text, title,
+						img, section, element;
+					
+					function removeEmptyElements(node) {
+						var i, child;
+						
+						if (!node || !node.childNodes) {
+							return;
+						}
+						
+						for (i = 0; i < node.childNodes.length; i++) {
+							child = node.childNodes[i];
+							if (child.nodeType === 8 ||
+								child.nodeType === 1 &&
+								child.childNodes &&
+								!child.childNodes.length &&
+								child.tagName !== 'IMG' &&
+								child.tagName !== 'BR') {
+								
+								node.removeChild(child);
+								i--;
+							}
+						}
+					}
+	
+					if (!tumblr || !tumblr.posts) {
+						return;
+					}
+					
+					posts = tumblr.posts;
+					max = Math.min(6, posts.length);
+					for (i = 0; i < max; i++) {
+						post = posts[i];
+						url = post['photo-url-500'];
+						text = post['photo-caption'];
+						title = (/<strong>([^<]+)<\/strong>/i).exec(text);
+						
+						if (title) {
+							text = text.substr(0, title.index) + text.substr(title.index + title[0].length);
+							title = title[1];
+	
+							section = document.createElement('section');
+							elements.lightbox.appendChild(section);
+							
+							element = document.createElement('h2');
+							element.appendChild(document.createTextNode(title));
+							section.appendChild(element);
+							
+							img = document.createElement('img');
+							img.setAttribute('class', 'main');
+							img.src = url;
+							section.appendChild(img);
+							
+							element = document.createElement('div');
+							element.setAttribute('class', 'caption');
+							element.innerHTML = text;
+							removeEmptyElements(element);
+							section.appendChild(element);
+							
+							addSection(section, i + 4);
+						}
+					}
+				};
+			
+				document.getElementById('video').addEventListener('ended', function() {
+					document.getElementById('main').removeAttribute('class');
+				}, false);
+
+				for (i = 0; i < ids.length; i++) {
+					elements[ ids[i] ] = document.getElementById(ids[i]);
+				}
+				
+				videos = document.getElementsByTagName('video');
+
+				sections = elements.lightbox.getElementsByTagName('section');
+				
+				for (i = 0; i < 10; i++) {
+					section = sections[i +  2];
+					
+					if (section) {
+					
+						addSection(section, i);
+
+					}
+				}
+				
+				addSection(sections[0], 10);
+				addSection(sections[1], 11);
+				activeSection = elements.intro;
+	
+				var script = document.createElement('script');
+				script.src = 'http://iuwebnative.tumblr.com/api/read/json?callback=loadStories';
+				document.head.appendChild(script);
+				
+				Recaptcha.create("6Ld6R8cSAAAAAECEAGcLnxmBPXIJTZ7hLpTmIBaJ",
+					"captcha");
+				
+				elements['submit-button'].addEventListener('click', function() {
+					var valid = true,
+					//http://projects.scottsplayground.com/email_address_validation/
+					regex = /^((([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+(\.([a-z]|\d|[!#\$%&'\*\+\-\/=\?\^_`{\|}~]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])+)*)|((\x22)((((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(([\x01-\x08\x0b\x0c\x0e-\x1f\x7f]|\x21|[\x23-\x5b]|[\x5d-\x7e]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(\\([\x01-\x09\x0b\x0c\x0d-\x7f]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF]))))*(((\x20|\x09)*(\x0d\x0a))?(\x20|\x09)+)?(\x22)))@((([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|\d|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.)+(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])|(([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])([a-z]|\d|-|\.|_|~|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])*([a-z]|[\u00A0-\uD7FF\uF900-\uFDCF\uFDF0-\uFFEF])))\.?$/;
+
+					elements.name.value = elements.name.value.replace(/^[\s\t\n\r ]+/, '');
+					elements.name.value = elements.name.value.replace(/[\s\t\n\r ]+$/, '');
+
+					if (!elements.name.value) {
+						valid = false;
+						elements['label-name'].setAttribute('class', 'invalid');
+					} else {
+						elements['label-name'].removeAttribute('class');
+					}
+				
+					elements.email.value = elements.email.value.replace(/^[\s\t\n\r ]+/, '');
+					elements.email.value = elements.email.value.replace(/[\s\t\n\r ]+$/, '');
+
+					if (!elements.email.value || !regex.test(elements.email.value)) {
+						valid = false;
+						elements['label-email'].setAttribute('class', 'invalid');
+					} else {
+						elements['label-email'].removeAttribute('class');
+					}
+				
+					elements.story.value = elements.story.value.replace(/^[\s\t\n\r ]+/, '');
+					elements.story.value = elements.story.value.replace(/[\s\t\n\r ]+$/, '');
+
+					if (!elements.story.value) {
+						valid = false;
+					}
+					
+					if (!valid) {
+						return;
+					}
+
+					var formData = new FormData();
+					formData.append('name', elements.name.value);
+					formData.append('email', elements.email.value);
+					formData.append('story', elements.story.value);
+
+					formData.append('recaptcha_challenge_field', Recaptcha.get_challenge());
+					formData.append('recaptcha_response_field', Recaptcha.get_response());
+					
+					elements['submit-button'].disabled = true;
+
+					var request = new XMLHttpRequest();
+					request.open('POST', 'submit.php', true);
+					request.onreadystatechange = function (aEvt) {
+						if (request.readyState == 4) {
+							elements['submit-button'].disabled = false;
+							Recaptcha.reload();
+							if (request.responseText === 'success') {
+								elements.form.style.display = 'none';
+								elements['thank-you'].style.display = 'block';
+								elements.story.value = '';
+							} else {								
+							}
+						}
+					};
+					request.send(formData);
+				}, false);
+			}, false);
+		}() );
+				
+		</script>
+	</body>
+</html>
